@@ -54,18 +54,96 @@ class SinglyLinkedList {
     }
     return removingHead;
   }
+
+  unshift(val) {
+    let newNodeToFront = new Node(val);
+    if (!this.head) {
+      this.head = newNodeToFront;
+      this.tail = this.head;
+    } else {
+      newNodeToFront.next = this.head;
+      this.head = newNodeToFront;
+    }
+    this.length++;
+    return this;
+  }
+  get(index) {
+    if (index < 0 || index >= this.length) return null;
+    let current = this.head;
+    let counter = 0;
+    while (counter !== index) {
+      current = current.next;
+      counter++;
+    }
+    return current;
+  }
+  set(index, value) {
+    if (!index) return false;
+    let node = this.get(index);
+    console.log(node);
+    if (node) {
+      node.val = value;
+      return true;
+    }
+    return false;
+  }
+
+  insert(index, value) {
+    if (index < 0 || index > this.length) return false;
+    if (index === 0) {
+      // !!this.unshift(value)
+      this.unshift(value);
+      return true;
+    }
+    if (index === this.length) {
+      // !!this.push(value)
+      this.push(value);
+      return true;
+    } else {
+      let newNode = new Node(value);
+      let previousNode = this.get(index - 1);
+      let indexNode = this.get(index);
+      previousNode.next = newNode;
+      newNode.next = indexNode;
+    }
+    this.length++;
+    return true;
+  }
+
+  remove(index) {
+    if (index < 0 || index >= this.length) return undefined;
+    if (index === this.length - 1) return this.pop();
+    if (index === 0) return this.shift();
+    let previousNode = this.get(index - 1);
+    let removingNode = this.get(index);
+    previousNode.next = removingNode.next;
+    this.length--;
+    return removingNode;
+  }
+
+  reverse() {
+    let node = this.head;
+    this.head = this.tail;
+    this.tail = node;
+    console.log(this);
+    //     let next;
+    //     let previous = null;
+    //     for (var i = 0; i < this.length; i++) {
+    //       next = node.next;
+    //       node.next = previous;
+    //       previous = node;
+    //       node = next;
+    //     }
+  }
 }
 
 let list = new SinglyLinkedList();
-list.push("hello");
-list.push("goodbye");
 list.push(3);
 list.push(1000);
-list.push("lkjasfjlkasdkjlf");
-
-console.log(list.shift());
-console.log(list.shift());
-console.log(list.shift());
-console.log(list.shift());
-console.log(list.shift());
-console.log(list);
+list.push("good morning");
+// list.unshift("unshiftingSecond");
+// console.log(list.get(1));
+// console.log(list.set(1, "awesome"));
+// console.log(list.insert(3, "coolbeans!"));
+// console.log(list.remove(1));
+console.log(list.reverse());
