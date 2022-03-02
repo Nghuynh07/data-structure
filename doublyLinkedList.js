@@ -95,6 +95,15 @@ class DoublyLinkedList {
     }
     return current;
   }
+
+  set(index, value) {
+    let indexNode = this.get(index);
+    if (indexNode !== null) {
+      indexNode.val = value;
+      return true;
+    }
+    return false;
+  }
 }
 
 let list = new DoublyLinkedList();
@@ -103,5 +112,5 @@ list.push(30);
 list.push(22);
 list.push(11);
 list.unshift(1);
-console.log(list.get(10));
-// console.log(list);
+// console.log(list.get(10));
+console.log(list);
