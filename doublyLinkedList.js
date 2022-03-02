@@ -32,21 +32,53 @@ class DoublyLinkedList {
   }
 
   pop() {
-    let removingTail = this.tail;
     if (this.length === 0) return undefined;
-    else {
+    let removingTail = this.tail;
+    if (this.length === 1) {
+      this.head = null;
+      this.tail = null;
+    } else {
       this.tail = this.tail.prev;
       this.tail.next = null;
       removingTail.prev = null;
     }
+
     this.length--;
     return removingTail;
+  }
+
+  shift() {
+    if (this.length === 0) return undefined;
+    let poppedHead = this.head;
+    if (this.length === 1) {
+      this.head = null;
+      this.tail = null;
+    } else {
+      this.head = poppedHead.next;
+      this.head.prev = null;
+      poppedHead.next = null;
+    }
+    this.length--;
+    return poppedHead;
+  }
+
+  unshift(val) {
+    let newNode = new Node(val);
+    if (this.length === 0) {
+      this.head = newNode;
+      this.tail = newNode;
+    } else {
+      this.head.prev = newNode;
+      newNode.next = this.head;
+      this.head = newNode;
+    }
+    this.length++;
+    return this;
   }
 }
 
 let list = new DoublyLinkedList();
 list.push(20);
 list.push(30);
-list.push("last item");
-list.pop();
+list.unshift(1);
 console.log(list);
