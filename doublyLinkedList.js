@@ -18,14 +18,9 @@ class DoublyLinkedList {
       this.head = newNode;
       this.tail = newNode;
     } else {
-      let removingTail = this.tail;
       this.tail.next = newNode;
-      this.tail = this.tail.next;
-      this.tail.prev = removingTail;
-
-      //   this.tail.next = newNode;
-      //   newNode.prev = this.tail;
-      //   this.tail = newNode;
+      newNode.prev = this.tail;
+      this.tail = newNode;
     }
     this.length++;
     return this;
@@ -78,18 +73,19 @@ class DoublyLinkedList {
 
   get(index) {
     if (index < 0 || index >= this.length) return null;
-    if (index <= Math.floor(this.length / 2)) {
-      let counter = 0;
+    var counter, current;
+    if (index <= this.length / 2) {
       let current = this.head;
+      let counter = 0;
       while (counter !== index) {
         current = current.next;
         counter++;
       }
     } else {
-      let counter = this.length - 1;
-      let current = this.tail;
+      counter = this.length - 1;
+      current = this.tail;
       while (counter !== index) {
-        current.current.prev;
+        current = current.prev;
         counter--;
       }
     }
@@ -104,13 +100,49 @@ class DoublyLinkedList {
     }
     return false;
   }
+
+  insert(index, value) {
+    if (index < 0 || index > this.length) return false;
+    if (index === 0) return !!this.unshift(value);
+    if (index === this.length) return !!this.push(value);
+
+    let newNode = new Node(value);
+
+    let previousNode = this.get(index - 1);
+    let nextNode = previousNode.next;
+
+    previousNode.next = newNode;
+    newNode.prev = previousNode;
+    newNode.next = nextNode;
+    nextNode.prev = newNode;
+
+    this.length++;
+    return true;
+  }
+
+  remove(index) {
+    if (index < 0 || index >= this.length) return false;
+    if (index === 0) return !!this.shift();
+    if (index === this.length) return !!this.pop();
+
+    let previousNode = this.get(index - 1);
+    let nextNode = this.get(index + 1);
+    let removingNode = this.get(index);
+
+    previousNode.next = nextNode;
+    nextNode.prev = previousNode;
+    removingNode.next = null;
+    removingNode.prev = null;
+
+    this.length--;
+    return removingNode;
+  }
 }
 
 let list = new DoublyLinkedList();
 list.push(20);
 list.push(30);
-list.push(22);
 list.push(11);
-list.unshift(1);
-// console.log(list.get(10));
+console.log(list.insert(0, 99));
+list.remove(0);
 console.log(list);
