@@ -53,14 +53,65 @@ class BinarySearchTree {
     if (!found) return undefined;
     return current;
   }
+
+  bfs() {
+    let node = this.root,
+      data = [],
+      queue = [];
+
+    queue.push(node);
+    while (queue.length) {
+      node = queue.shift();
+      data.push(node.value);
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+    return data;
+  }
+
+  dfsPRE() {
+    let data = [];
+    function traverse(node) {
+      data.push(node.value);
+      if (node.left) traverse(node.left);
+      if (node.right) traverse(node.right);
+    }
+    traverse(this.root);
+    return data;
+  }
+
+  dfsPOST() {
+    let data = [];
+    function traverse(node) {
+      if (node.left) traverse(node.left);
+      data.push(node.value);
+      if (node.right) traverse(node.right);
+    }
+    traverse(this.root);
+    return data;
+  }
+
+  dfsIn() {
+    let data = [];
+    function traverse(node) {
+      if (node.left) traverse(node.left);
+      data.push(node.value);
+      if (node.right) traverse(node.right);
+    }
+    traverse(this.root);
+    return data;
+  }
 }
 
 let tree = new BinarySearchTree();
-tree.insert(100);
-tree.insert(40);
-tree.insert(102);
-tree.insert(99);
-tree.insert(11);
+tree.insert(10);
+tree.insert(6);
+tree.insert(15);
+tree.insert(3);
+tree.insert(8);
+tree.insert(20);
 
-console.log(tree.find(102));
+console.log(tree.dfsPOST());
+console.log(tree.dfsPRE());
+// console.log(tree.bfs());
 // console.log(tree);
